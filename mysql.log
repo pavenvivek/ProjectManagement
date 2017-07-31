@@ -1,0 +1,140 @@
+mysql> create database Team_Management;
+Query OK, 1 row affected (0.00 sec)
+
+mysql> use Team_Management;
+Database changed
+mysql> 
+mysql> create table employee (id int auto_increment primary key, name varchar(20), address varchar(100), email varchar(20), dob date, phone_no varchar(15), years_of_exp int, username varchar(15), password varchar(20), created_by varchar(20), created_date date, modified_by varchar(20), modified_date date, delete_flag varchar(5));
+Query OK, 0 rows affected (0.45 sec)
+
+mysql> 
+mysql> 
+mysql> desc employee;
++---------------+--------------+------+-----+---------+----------------+
+| Field         | Type         | Null | Key | Default | Extra          |
++---------------+--------------+------+-----+---------+----------------+
+| id            | int(11)      | NO   | PRI | NULL    | auto_increment |
+| name          | varchar(20)  | YES  |     | NULL    |                |
+| address       | varchar(100) | YES  |     | NULL    |                |
+| email         | varchar(20)  | YES  |     | NULL    |                |
+| dob           | date         | YES  |     | NULL    |                |
+| phone_no      | varchar(15)  | YES  |     | NULL    |                |
+| years_of_exp  | int(11)      | YES  |     | NULL    |                |
+| username      | varchar(15)  | YES  |     | NULL    |                |
+| password      | varchar(20)  | YES  |     | NULL    |                |
+| created_by    | varchar(20)  | YES  |     | NULL    |                |
+| created_date  | date         | YES  |     | NULL    |                |
+| modified_by   | varchar(20)  | YES  |     | NULL    |                |
+| modified_date | date         | YES  |     | NULL    |                |
+| delete_flag   | varchar(5)   | YES  |     | NULL    |                |
++---------------+--------------+------+-----+---------+----------------+
+14 rows in set (0.01 sec)
+
+mysql> create table project (id int auto_increment primary key, name varchar(20), manager_id int, foreign key (manager_id) references employee(id));
+Query OK, 0 rows affected (0.47 sec)
+
+mysql> 
+mysql> desc project;
++------------+-------------+------+-----+---------+----------------+
+| Field      | Type        | Null | Key | Default | Extra          |
++------------+-------------+------+-----+---------+----------------+
+| id         | int(11)     | NO   | PRI | NULL    | auto_increment |
+| name       | varchar(20) | YES  |     | NULL    |                |
+| manager_id | int(11)     | YES  | MUL | NULL    |                |
++------------+-------------+------+-----+---------+----------------+
+3 rows in set (0.00 sec)
+
+mysql> 
+mysql> create table team (id int auto_increment primary key, name varchar(20), team_lead_id int, foreign key (team_lead_id) references employee(id));
+Query OK, 0 rows affected (0.41 sec)
+
+mysql> desc team;
++--------------+-------------+------+-----+---------+----------------+
+| Field        | Type        | Null | Key | Default | Extra          |
++--------------+-------------+------+-----+---------+----------------+
+| id           | int(11)     | NO   | PRI | NULL    | auto_increment |
+| name         | varchar(20) | YES  |     | NULL    |                |
+| team_lead_id | int(11)     | YES  | MUL | NULL    |                |
++--------------+-------------+------+-----+---------+----------------+
+3 rows in set (0.03 sec)
+
+mysql> 
+mysql> create table team_employee_mapping (id int auto_increment primary key, team_id int, employee_id int, foreign key (team_id) references team(id), foreign key (employee_id) references employee(id));
+Query OK, 0 rows affected (0.46 sec)
+
+mysql> desc team_employee_mapping;
++-------------+---------+------+-----+---------+----------------+
+| Field       | Type    | Null | Key | Default | Extra          |
++-------------+---------+------+-----+---------+----------------+
+| id          | int(11) | NO   | PRI | NULL    | auto_increment |
+| team_id     | int(11) | YES  | MUL | NULL    |                |
+| employee_id | int(11) | YES  | MUL | NULL    |                |
++-------------+---------+------+-----+---------+----------------+
+3 rows in set (0.01 sec)
+
+mysql> 
+mysql> create table project_team_mapping (id int auto_increment primary key, project_id int, team_id int, foreign key (project_id) references project(id), foreign key (team_id) references team(id));
+Query OK, 0 rows affected (0.40 sec)
+
+mysql> 
+mysql> desc project_team_mapping;
++------------+---------+------+-----+---------+----------------+
+| Field      | Type    | Null | Key | Default | Extra          |
++------------+---------+------+-----+---------+----------------+
+| id         | int(11) | NO   | PRI | NULL    | auto_increment |
+| project_id | int(11) | YES  | MUL | NULL    |                |
+| team_id    | int(11) | YES  | MUL | NULL    |                |
++------------+---------+------+-----+---------+----------------+
+3 rows in set (0.07 sec)
+
+mysql> create table tasks (id int auto_increment primary key, description varchar(200), created_by int, assigned_to int, status varchar(15), created_date date, closed_date date, foreign key(created_by) references employee(id), foreign key(assigned_to) references employee(id));
+Query OK, 0 rows affected (0.41 sec)
+
+mysql> 
+mysql> 
+mysql> desc tasks;
++--------------+--------------+------+-----+---------+----------------+
+| Field        | Type         | Null | Key | Default | Extra          |
++--------------+--------------+------+-----+---------+----------------+
+| id           | int(11)      | NO   | PRI | NULL    | auto_increment |
+| description  | varchar(200) | YES  |     | NULL    |                |
+| created_by   | int(11)      | YES  | MUL | NULL    |                |
+| assigned_to  | int(11)      | YES  | MUL | NULL    |                |
+| status       | varchar(15)  | YES  |     | NULL    |                |
+| created_date | date         | YES  |     | NULL    |                |
+| closed_date  | date         | YES  |     | NULL    |                |
++--------------+--------------+------+-----+---------+----------------+
+7 rows in set (0.00 sec)
+
+mysql> 
+
+mysql> show tables;
++---------------------------+
+| Tables_in_Team_Management |
++---------------------------+
+| employee                  |
+| project                   |
+| project_team_mapping      |
+| team                      |
+| team_employee_mapping     |
++---------------------------+
+5 rows in set (0.00 sec)
+
+mysql> 
+mysql> create table comments (id int auto_increment primary key, content varchar(250), msg_from int, msg_to int, created_date date, delete_flag varchar(5), foreign key(msg_from) references employee(id), foreign key(msg_to) references employee(id));
+Query OK, 0 rows affected (3.30 sec)
+
+mysql> desc comments;
++--------------+--------------+------+-----+---------+----------------+
+| Field        | Type         | Null | Key | Default | Extra          |
++--------------+--------------+------+-----+---------+----------------+
+| id           | int(11)      | NO   | PRI | NULL    | auto_increment |
+| content      | varchar(250) | YES  |     | NULL    |                |
+| msg_from     | int(11)      | YES  | MUL | NULL    |                |
+| msg_to       | int(11)      | YES  | MUL | NULL    |                |
+| created_date | date         | YES  |     | NULL    |                |
+| delete_flag  | varchar(5)   | YES  |     | NULL    |                |
++--------------+--------------+------+-----+---------+----------------+
+6 rows in set (0.00 sec)
+
+mysql> 
