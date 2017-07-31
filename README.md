@@ -1,7 +1,7 @@
 # ProjectManagement
 This is a demo project created using spring, hibernate, bootstrap frameworks with mysql as backend and eclipse as IDE. 
 
-This is an application which can be used for team management. The following are the types of users:
+This is an application which can be used for team management. The following are the types of users: 
 1] Manager or Admin 
 2] Team Lead 
 3] Employee 
